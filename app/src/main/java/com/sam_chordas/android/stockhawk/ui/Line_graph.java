@@ -67,7 +67,7 @@ public class Line_graph extends ActionBarActivity {
         protected String doInBackground(String... params) {
             RequestHandler requestHandler = new RequestHandler(params[0]);
             String response = requestHandler.getResponse();
-            float val = 4f;
+            int val = 1;
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONObject jsonObject1 = jsonObject.getJSONObject("query");
@@ -76,13 +76,8 @@ public class Line_graph extends ActionBarActivity {
                 Log.v("array",jsonArray.length()+"");
                 for(int i=0;i<jsonArray.length();i++){
                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-                    Log.v("Adj_Close",(int) Float.parseFloat(jsonObject2.getString("Adj_Close")) + "");
                     entries.add(new Entry(val, (int) Float.parseFloat(jsonObject2.getString("Adj_Close"))));
-                    if(val==12){
-                        val = 4f;
-                    }else{
-                        val = val+4;
-                    }
+                    val++;
 
                 }
             } catch (JSONException e) {
@@ -103,24 +98,13 @@ public class Line_graph extends ActionBarActivity {
             labels.add("12");
             labels.add("13");
             labels.add("14");
-            /*labels.add("15-Jan");
-            labels.add("16-Jan");
-            labels.add("17-Jan");
-            labels.add("18-Jan");
-            labels.add("19-Jan");
-            labels.add("20-Jan");
-            labels.add("21-Jan");
-            labels.add("22-Jan");
-            labels.add("23-Jan");
-            labels.add("24-Jan");*/
+
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.v("Entry Size", entries.size()+" ");
-            Log.v("Labels Size",labels.size()+" ");
             LineDataSet dataset = new LineDataSet(entries, "Stock Values over time");
             dataset.setDrawCircles(true);
             dataset.setDrawValues(true);
